@@ -96,6 +96,14 @@ void ofApp::setup(){
     ////////////////// end fbo color picker /////////////////
 
     
+    //temp coordinates
+    for (int i = 0; i < curveVertices.size(); i++){
+        
+        xt = curveVertices[i].x;
+        yt = curveVertices[i].y;
+        
+        
+    }
  
 
 
@@ -104,6 +112,17 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     img.update();
+    
+    for (int i = 0; i < curveVertices.size(); i++){
+
+    
+    xt +=(ofGetWidth()/2-xt)*0.01;
+    yt +=(ofGetHeight()/2-yt)*0.01;
+
+//        xt = curveVertices[i].x;
+//        yt = curveVertices[i].y;
+    
+    }
 
 }
 
@@ -121,6 +140,12 @@ void ofApp::draw(){
 
     if (selectedColor.size()>0) {
         polygons();
+        
+        for (int i = 0; i < curveVertices.size(); i++){
+            
+            
+            
+        }
 
     }
     
@@ -203,11 +228,12 @@ void ofApp::keyPressed(int key){
     
     if(key=='k'){
         
-        ofColor randomColor(ofRandom(255), ofRandom(255),ofRandom(255));
-        selectedColor.clear();
-        selectedColor.push_back(randomColor);
         
         if (curved) {
+            ofColor randomColor(ofRandom(255), ofRandom(255),ofRandom(255));
+            selectedColor.clear();
+            selectedColor.push_back(randomColor);
+
             
             for (int i = 0; i < curveVertices.size(); i++){
                 
@@ -218,9 +244,27 @@ void ofApp::keyPressed(int key){
             
         } else {
             for (int i = 0; i < curveVertices.size(); i++){
+                ofPoint position(curveVertices[i].x,curveVertices[i].y);
+                ofPoint centre(ofGetWidth()/2,ofGetHeight()/2);
+                
+                float dist = ofDist(position.x,position.y , centre.x,centre.y);
+//                ofNormalize(dist, -1, 1);
 
-            curveVertices[i].x=mouseX+ofRandom(ofGetWidth()/2);
-            curveVertices[i].y=mouseY+ofRandom(ofGetHeight()/2);
+                if ((curveVertices[i].y<ofGetHeight()/2
+                    || curveVertices[i].x<ofGetWidth()/2)
+                    ) {
+                    
+
+                    
+                
+                }
+                else if((curveVertices[i].y>ofGetHeight()/2
+                         || curveVertices[i].x>ofGetWidth()/2)
+                         ){
+                
+                   
+                    
+                }
             }
             
         }
@@ -265,14 +309,7 @@ void ofApp::mouseMoved(int x, int y){
     
     }
 
-    
-    
-////    //osc
-//    ofxOscMessage m;
-//    m.setAddress("/mouse/position");
-//    m.addIntArg(x);
-//    m.addIntArg(y);
-//    sender.sendMessage(m);
+
 
 
 }
@@ -332,6 +369,8 @@ void ofApp::mousePressed(int x, int y, int button){
             ofPoint newPoint(x,y,0);
             myPoints.push_back(newPoint);
             
+            
+            
 //            saveXml(); //saving Xml file
 
 
@@ -345,6 +384,9 @@ void ofApp::mousePressed(int x, int y, int button){
         float diffy = y - curveVertices[i].y;
         float dist = sqrt(diffx*diffx + diffy*diffy);
         
+        
+//        curveVertices[i].x=xt;
+//        curveVertices[i].y=yt;
         
         if (curveVertices[i].bOver==true) {
             ofSetColor(0);
@@ -595,7 +637,8 @@ void ofApp::saveXml(){
     //////////////////XML//////////////
     ofxXmlSettings positions;
     
-    ofxOscMessage m;
+    ofxOscMessage colorOSC;
+    ofxOscMessage positionOSC;
     
     ///color
     positions.addTag("color");
@@ -606,12 +649,12 @@ void ofApp::saveXml(){
     positions.addValue("B", selectedColor[0].b);
     
     //osc
-    m.setAddress("/color");
+//    m.setAddress("/color");
 
-    m.addIntArg(selectedColor[0].r);
-    m.addIntArg(selectedColor[0].g);
-    m.addIntArg(selectedColor[0].b);
-    sender.sendMessage(m);
+    colorOSC.addIntArg(selectedColor[0].r);
+    colorOSC.addIntArg(selectedColor[0].g);
+    colorOSC.addIntArg(selectedColor[0].b);
+    sender.sendMessage(colorOSC);
 
 
 
@@ -639,11 +682,11 @@ void ofApp::saveXml(){
         positions.addValue("Z", curveVertices[i].z);
 
 //        //osc
-        m.setAddress("/coordinate");
+//        m.setAddress("/coordinate");
 
-        m.addIntArg(curveVertices[i].x);
-        m.addIntArg(curveVertices[i].y);
-        sender.sendMessage(m);
+        positionOSC.addIntArg(curveVertices[i].x);
+        positionOSC.addIntArg(curveVertices[i].y);
+        sender.sendMessage(positionOSC);
         positions.popTag();//pop position
     }
     positions.popTag(); //pop position

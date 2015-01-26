@@ -43,7 +43,7 @@ class ofApp : public ofBaseApp{
 
     
         bool open, ableClick,bFullscreen,running, curved;
-        float distance;
+        float distance, xt,yt;
         float handlerRadius, colorSq;
         string curvedVal;
     

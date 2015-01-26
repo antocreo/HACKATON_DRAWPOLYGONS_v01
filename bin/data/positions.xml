@@ -6,30 +6,4 @@
 <curved>
     <value>0</value>
 </curved>
-<positions>
-    <position>
-        <X>545.000000000</X>
-        <Y>248.000000000</Y>
-        <Z>0.000000000</Z>
-    </position>
-    <position>
-        <X>890.000000000</X>
-        <Y>267.000000000</Y>
-        <Z>0.000000000</Z>
-    </position>
-    <position>
-        <X>800.000000000</X>
-        <Y>438.000000000</Y>
-        <Z>0.000000000</Z>
-    </position>
-    <position>
-        <X>592.000000000</X>
-        <Y>393.000000000</Y>
-        <Z>0.000000000</Z>
-    </position>
-    <position>
-        <X>545.000000000</X>
-        <Y>251.000000000</Y>
-        <Z>0.000000000</Z>
-    </position>
-</positions>
+<positions></positions>
